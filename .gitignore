@@ -1,1 +1,5 @@
 .vscode
+.venv
+*.log
+*.xml
+molecule/*/tests/__pycache__
