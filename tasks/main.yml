@@ -1,2 +1,48 @@
 ---
-# tasks file for ansible-role-apt
+- name: Upgrade the OS
+  ansible.builtin.apt:
+    upgrade: full
+
+- name: Delete /etc/apt/sources.list file
+  ansible.builtin.file:
+    path: /etc/apt/sources.list
+    state: absent
+  when: apt_manage_sources_list | bool
+
+- name: Add an apt key by id from a keyserver
+  ansible.builtin.apt_key:
+    keyserver: "{{ item.keyserver }}"
+    id: "{{ item.id }}"
+    state: present
+  with_items: "{{ apt_keys }}"
+
+- name: Add source repository into sources list
+  ansible.builtin.apt_repository:
+    repo: "{{ item.name }}"
+    state: present
+    update_cache: false
+  with_items: "{{ apt_repositories }}"
+  notify:
+    - Update cache
+
+- name: "Install a .deb package from the internet"
+  ansible.builtin.apt:
+    deb: "{{ item.url }}"
+  with_items: "{{ apt_deb_install }}"
+
+- name: Install package(s)
+  ansible.builtin.apt:
+    name: "{{ item.name }}"
+    state: present
+  with_items: "{{ apt_install }}"
+  notify:
+    - Update cache
+
+- name: Remove package(s)
+  ansible.builtin.apt:
+    name: "{{ item.name }}"
+    state: absent
+    purge: "{{ apt_remove_purge }}"
+  with_items: "{{ apt_remove }}"
+  notify:
+    - Update cache
