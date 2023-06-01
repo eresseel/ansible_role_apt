@@ -1,0 +1,16 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: "{{ lookup('env', 'PWD') | basename }}"
+  vars:
+    apt_keys:
+      - keyserver: keyserver.ubuntu.com
+        id: 36A1D7869245C8950F966E92D8576A8BA88D21E9
+    apt_deb_install:
+      - url: https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
+    apt_install:
+      - name: mc
+      - name: ncdu
+    apt_remove:
+      - name: ncdu
