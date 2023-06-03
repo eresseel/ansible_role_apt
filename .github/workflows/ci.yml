@@ -1,0 +1,12 @@
+name: Docker Image CI
+on: [push]
+
+jobs:
+  build:
+    runs-on: python:3.11.2-alpine
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Install and run tox
+        run: pip install tox==4.5.2 && tox
