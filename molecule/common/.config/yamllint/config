@@ -39,4 +39,5 @@ ignore: |
   .tox
   ../
   .cache/
+  .github/workflows/ci.yml
   meta/main.yml
