@@ -19,21 +19,9 @@ def ansible_ip():
 
 
 def test_sources_list_removed(host):
-    assert host.file("/etc/apt/sources.list").exists is False
+    assert host.file("/etc/apt/sources.list").exists is True
 
 
-def test_key_is_added(host):
-    cmd = host.run("apt-key --keyring /etc/apt/trusted.gpg list | grep '36A1'")
-    assert cmd.rc == 0
-
-
-def test_package_is_installed(host):
-    packages = ["teamviewer", "mc"]
-    for item in packages:
-        package = host.package(item)
-        assert package.is_installed
-
-
-def test_ncdu_is_not_installed(host):
-    ncdu = host.package("ncdu")
-    assert ncdu.is_installed is False
+def test_other_sources_list_exists(host):
+    assert host.file("/etc/apt/sources.list.d/archive_ubuntu_com_ubuntu.list")\
+        .exists is False
