@@ -1,0 +1,16 @@
+dependencies: []
+galaxy_info:
+  author: "lberes"
+  description: "Apt for linux"
+  company: "Eresseel"
+  license: license (MIT)
+  min_ansible_version: 7.6
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+        - focal
+  galaxy_tags:
+    - system
+    - linux
+    - ubuntu

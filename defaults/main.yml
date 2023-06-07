@@ -1,0 +1,21 @@
+---
+apt_manage_sources_list: false
+apt_focal_repositories:
+  - name: deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
+  - name: deb-src http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
+  - name: deb http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
+  - name: deb-src http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
+  - name: deb http://archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
+  - name: deb-src http://archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
+  - name: deb http://archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse
+  - name: deb-src http://archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse
+  - name: deb http://archive.canonical.com/ubuntu focal partner
+  - name: deb-src http://archive.canonical.com/ubuntu focal partner
+
+apt_repositories: []
+apt_gpg_keys: []
+apt_keys: []
+apt_deb_install: []
+apt_install: []
+apt_remove: []
+apt_remove_purge: false

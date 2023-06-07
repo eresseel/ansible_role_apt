@@ -1,0 +1,91 @@
+---
+- name: Upgrade the OS
+  ansible.builtin.apt:
+    upgrade: full
+    update_cache: yes
+    autoclean: yes
+    autoremove: yes
+
+- name: Ensure additional dependencies are installed
+  ansible.builtin.apt:
+    name:
+      - gnupg
+      - gnupg2
+      - apt-transport-https
+      - ca-certificates
+      - software-properties-common
+    state: present
+
+- name: Delete /etc/apt/sources.list file
+  ansible.builtin.file:
+    path: /etc/apt/sources.list
+    state: absent
+  when: apt_manage_sources_list | bool
+
+- name: Add focal source repository into sources list
+  ansible.builtin.apt_repository:
+    repo: "{{ item.name }}"
+    state: present
+    update_cache: false
+  with_items: "{{ apt_focal_repositories }}"
+  when: apt_manage_sources_list | bool
+  notify:
+    - Update cache
+
+- name: Add an apt key by id from a keyserver
+  ansible.builtin.apt_key:
+    keyserver: "{{ item.keyserver }}"
+    id: "{{ item.id }}"
+    state: present
+  with_items: "{{ apt_keys }}"
+
+- name: Setting GPG key
+  block:
+    - name: Create a directory
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '755'
+
+    - name: Download keyring in /etc/apt/keyrings folder
+      ansible.builtin.get_url:
+        url: "{{ item.url }}"
+        dest: "{{ item.keyring }}"
+      with_items: "{{ apt_gpg_keys }}"
+
+    - name: Import GPG key
+      ansible.builtin.apt_key:
+        url: "{{ item.url }}"
+        state: present
+      with_items: "{{ apt_gpg_keys }}"
+
+- name: Add other source repository into sources list
+  ansible.builtin.apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    update_cache: false
+  with_items: "{{ apt_repositories }}"
+  notify:
+    - Update cache
+
+- name: "Install a .deb package from the internet"
+  ansible.builtin.apt:
+    deb: "{{ item.url }}"
+  with_items: "{{ apt_deb_install }}"
+
+- name: Install package(s)
+  ansible.builtin.apt:
+    name: "{{ item.name }}"
+    state: present
+  with_items: "{{ apt_install }}"
+  notify:
+    - Update cache
+
+- name: Remove package(s)
+  ansible.builtin.apt:
+    name: "{{ item.name }}"
+    state: absent
+    purge: "{{ apt_remove_purge }}"
+  with_items: "{{ apt_remove }}"
+  notify:
+    - Update cache
