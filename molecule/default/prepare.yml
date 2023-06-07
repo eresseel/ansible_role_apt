@@ -1,0 +1,5 @@
+---
+- name: Prepare
+  hosts: all
+  roles:
+    - role: "{{ lookup('env', 'PWD') | basename }}"

@@ -1,0 +1,31 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: "{{ lookup('env', 'PWD') | basename }}"
+  vars:
+    apt_manage_sources_list: true
+    apt_remove_purge: true
+    apt_keys:
+      - keyserver: keyserver.ubuntu.com
+        id: 7EA0A9C3F273FCD8
+    apt_repositories:
+      - repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+      - repo: "deb [arch=amd64] https://packages.microsoft.com/repos/code stable main"
+    apt_gpg_keys:
+      - url: https://download.docker.com/linux/ubuntu/gpg
+        keyring: /etc/apt/keyrings/docker.gpg
+      - url: https://packages.microsoft.com/keys/microsoft.asc
+        keyring: /etc/apt/keyrings/packages.microsoft.gpg
+    apt_deb_install:
+      - url: https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
+    apt_install:
+      - name: mc
+      - name: ncdu
+      - name: docker-ce
+      - name: docker-ce-cli
+      - name: containerd.io
+      - name: docker-buildx-plugin
+      - name: docker-compose-plugin
+    apt_remove:
+      - name: ncdu
