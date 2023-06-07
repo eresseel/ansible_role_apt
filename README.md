@@ -20,7 +20,7 @@ Available variables are listed below, along with default values (see defaults/ma
 | apt_manage_sources_list | boolean | true          | `true` or `false`                                   |
 | apt_focal_repositories  | array   | []            | - name: deb ...                                     |
 | apt_repositories        | array   | []            | - name: deb-src...                                  |
-| apt_gpg_keys            | array   | []            | - url: https://download.docker.com/linux/ubuntu/gpg <br /> &nbsp;&nbsp;keyring: /etc/apt/keyrings/docker.gpg|
+| apt_gpg_keys            | array   | []            | - url: https://download.docker.com/gpg <br /> &nbsp;&nbsp;keyring: /etc/apt/keyrings/docker.gpg|
 | apt_keys                | array   | []            | - keyserver: keyserver.ubuntu.com <br /> &nbsp;&nbsp;id: 7EA0A9C3F273FCD8                 |
 | apt_deb_install         | array   | []            | - url: https://download...                          |
 | apt_install             | array   | []            | - name: mc                                          |
