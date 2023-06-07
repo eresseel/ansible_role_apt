@@ -2,7 +2,7 @@ name: Docker Image CI
 on: [push]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     container:
       image: python:3.11.2-alpine
@@ -17,8 +17,11 @@ jobs:
       - name: Install dev environment
         run: apk add gcc musl-dev linux-headers git
 
-      - name: Install tox
-        run: pip install tox==4.5.2
+      - name: Install test dependencies
+        run: pip install -r test-requirements.txt
 
-      - name: Run tox
-        run: tox
+      - name: Run lint
+        run: |
+          yamllint -c ./molecule/common/.config/yamllint/config .
+          flake8 ./molecule/
+          ansible-lint -x yaml --exclude=./molecule --project-dir .
